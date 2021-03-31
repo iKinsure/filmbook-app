@@ -1,5 +1,7 @@
 package com.ikinsure.filmbook;
 
+import com.ikinsure.filmbook.film.Film;
+import com.ikinsure.filmbook.film.FilmRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.ikinsure.filmbook;
+package com.ikinsure.filmbook.film;
 
 import javax.persistence.*;
 import java.util.Objects;

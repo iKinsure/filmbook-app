@@ -1,4 +1,4 @@
-package com.ikinsure.filmbook;
+package com.ikinsure.filmbook.film;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
