@@ -3,6 +3,9 @@ package com.ikinsure.filmbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
 @Service
 public class FilmService {
 
@@ -13,5 +16,8 @@ public class FilmService {
         this.repository = repository;
     }
 
+    public List<Film> getFilms() {
+        return repository.findAll();
+    }
 
 }

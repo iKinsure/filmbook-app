@@ -20,7 +20,7 @@ public class FilmController {
 
     @GetMapping("/films")
     public List<Film> getFilms() {
-        return null;
+        return service.getFilms();
     }
 
 }
