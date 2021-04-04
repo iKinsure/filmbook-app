@@ -72,7 +72,7 @@ class Album extends React.Component {
                                     <Card className={classes.card}>
                                         <CardMedia
                                             className={classes.cardMedia}
-                                            image={""} // TODO: image
+                                            image={film.image}
                                             title={film.title}
                                         />
                                         <CardContent className={classes.cardContent}>
