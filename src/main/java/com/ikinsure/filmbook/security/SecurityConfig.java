@@ -26,10 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/api/films").hasRole()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -40,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
-                createUser("user", "password", Roles.USER.name()),
-                createUser("admin", "password", Roles.ADMIN.name())
+                createUser("user", "password", Role.USER.name()),
+                createUser("admin", "password", Role.ADMIN.name())
         );
     }
 

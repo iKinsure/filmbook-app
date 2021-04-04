@@ -1,7 +1,9 @@
 package com.ikinsure.filmbook.film;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,6 +20,15 @@ public class FilmService {
 
     public List<Film> getFilms() {
         return repository.findAll();
+    }
+
+    public Film getFilmById(Long id) {
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Unable to find film resource"
+                ));
     }
 
 }
