@@ -1,6 +1,7 @@
 package com.ikinsure.filmbook.film;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity(name = "Film")
@@ -16,6 +17,9 @@ public class Film {
     @Column(name = "title", nullable = false, columnDefinition = "TEXT")
     private String title;
 
+    @Column(name = "release_date", nullable = false, columnDefinition = "DATE")
+    private LocalDate releaseDate;
+
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
@@ -23,8 +27,9 @@ public class Film {
 
     }
 
-    public Film(String title, String description) {
+    public Film(String title, LocalDate releaseDate, String description) {
         this.title = title;
+        this.releaseDate = releaseDate;
         this.description = description;
     }
 
@@ -52,17 +57,25 @@ public class Film {
         this.description = description;
     }
 
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Film film = (Film) o;
-        return Objects.equals(id, film.id) && Objects.equals(title, film.title) && Objects.equals(description, film.description);
+        return Objects.equals(id, film.id) && Objects.equals(title, film.title) && Objects.equals(releaseDate, film.releaseDate) && Objects.equals(description, film.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description);
+        return Objects.hash(id, title, releaseDate, description);
     }
 
     @Override
@@ -70,6 +83,7 @@ public class Film {
         return "Film{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", releaseDate=" + releaseDate +
                 ", description='" + description + '\'' +
                 '}';
     }
