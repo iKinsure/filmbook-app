@@ -33,10 +33,6 @@ class Album extends React.Component {
 
     }
 
-    async createFilm(film) {
-
-    }
-
     async updateFilm(id, film) {
         await fetch(`api/films/${id}`, {
             headers: {

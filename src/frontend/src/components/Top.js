@@ -1,7 +1,34 @@
 import React, { Component } from 'react'
 import {Button, Form, FormControl, Nav, Navbar} from "react-bootstrap";
+import CreateModal from "./CreateModal";
 
 class Top extends Component {
+
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            showModal: false,
+        }
+    }
+
+    handleUpload() {
+        this.setState({showModal: true});
+    }
+
+    async createFilm(film) {
+        await fetch('api/films', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(film),
+        }).then(() => this.setState({showModal: false}));
+    }
+
+    handleCreate(film) {
+        this.createFilm(film).then(r => console.log(r));
+    }
 
     render() {
         return (
@@ -13,12 +40,14 @@ class Top extends Component {
                 </Navbar.Brand>
                 <Navbar.Brand>Filmbook</Navbar.Brand>
                 <Nav className="mr-auto">
-                    <Nav.Link>Upload</Nav.Link>
+                    <Nav.Link onClick={ () => this.handleUpload() } >Upload</Nav.Link>
                 </Nav>
-                <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-info">Search</Button>
-                </Form>
+
+
+                {this.state.showModal ? <CreateModal
+                    onAccept={ (f) => this.handleCreate(f) }
+                    onDecline={ () => this.setState({showModal: false}) } /> : ''}
+
             </Navbar>
         );
     }
