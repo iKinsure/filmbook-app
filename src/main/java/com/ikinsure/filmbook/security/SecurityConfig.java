@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.ikinsure.filmbook.security.Permission.*;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,10 +28,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()
+        http.
+                cors().disable().
+                csrf().disable().authorizeRequests()
+
+                // configure permissions
+                .antMatchers(HttpMethod.GET, "/index*", "/static/**", "/*.js", "/*.json", "/*.ico", "/*.png")
+                    .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/films/**")
+//                    .hasAuthority(FILM_WRITE.name())
+                    .permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/films/**")
+//                    .hasAuthority(FILM_WRITE.name())
+                    .permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/films/**")
+//                    .hasAuthority(FILM_WRITE.name())
+                    .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/films/**")
+//                    .hasAuthority(FILM_READ.name())
+                    .permitAll()
+
                 .anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/index.html")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/homepage.html",true)
+                .failureUrl("/index.html?error=true")
                 .and()
                 .httpBasic();
     }
