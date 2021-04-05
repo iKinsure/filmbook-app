@@ -22,11 +22,13 @@ class DeleteModal extends Component {
                 <Modal.Footer>
                     <Button
                         variant="secondary"
+                        type="button"
                         onClick={ () => this.props.onDecline() }>
                         Close
                     </Button>
                     <Button
                         variant="primary"
+                        type="button"
                         onClick={ () => this.props.onAccept() }>
                         Delete
                     </Button>

@@ -10,14 +10,17 @@ class CreateModal extends Component {
         super(props);
         this.state = {
             validated: false,
-            film: {},
+            film: {
+                title: '',
+                releaseDate: '',
+                description: '',
+            },
         }
     }
 
     handleSubmit(event) {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
+        event.preventDefault();
+        if (event.currentTarget.checkValidity() === false) {
             event.stopPropagation();
         }
         this.setState({validated: true});
@@ -44,7 +47,10 @@ class CreateModal extends Component {
                     </Modal.Title>
                 </Modal.Header>
 
-                <Form validated={this.state.validated} onSubmit={(event) => this.handleSubmit(event)}>
+                <Form
+                    id="create-form"
+                    validated={this.state.validated}
+                    onSubmit={(event) => this.handleSubmit(event)}>
 
                     <Modal.Body>
 
@@ -80,6 +86,7 @@ class CreateModal extends Component {
                     <Modal.Footer>
                         <Button
                             variant="secondary"
+                            type="button"
                             onClick={ () => this.props.onDecline() }>
                             Close
                         </Button>

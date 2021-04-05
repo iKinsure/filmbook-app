@@ -27,9 +27,30 @@ class FilmCard extends Component {
 
                 </Card.Body>
                 <Card.Footer style={{display: 'flex', justifyContent: 'space-evenly'}}>
-                    <Button style={{width: '25%'}} size="sm" variant="secondary" onClick={ () => this.props.onClick(film, 'view') }>View</Button>
-                    <Button style={{width: '25%'}} size="sm" variant="secondary" onClick={ () => this.props.onClick(film, 'edit') }>Edit</Button>
-                    <Button style={{width: '25%'}} size="sm" variant="secondary" onClick={ () => this.props.onClick(film, 'delete') }>Delete</Button>
+                    <Button
+                        type="button"
+                        style={{width: '25%'}}
+                        size="sm"
+                        variant="secondary"
+                        onClick={ () => this.props.onClick(film, 'view') }>
+                        View
+                    </Button>
+                    <Button
+                        type="button"
+                        style={{width: '25%'}}
+                        size="sm"
+                        variant="secondary"
+                        onClick={ () => this.props.onClick(film, 'edit') }>
+                        Edit
+                    </Button>
+                    <Button
+                        type="button"
+                        style={{width: '25%'}}
+                        size="sm"
+                        variant="secondary"
+                        onClick={ () => this.props.onClick(film, 'delete') }>
+                        Delete
+                    </Button>
                 </Card.Footer>
             </Card>
         );

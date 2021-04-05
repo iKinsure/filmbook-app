@@ -15,9 +15,8 @@ class EditModal extends Component {
     }
 
     handleSubmit(event) {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
+        event.preventDefault();
+        if (event.currentTarget.checkValidity() === false) {
             event.stopPropagation();
         }
         this.setState({validated: true});
@@ -45,7 +44,10 @@ class EditModal extends Component {
                     </Modal.Title>
                 </Modal.Header>
 
-                <Form validated={this.state.validated} onSubmit={(event) => this.handleSubmit(event)}>
+                <Form
+                    id="edit-form"
+                    validated={this.state.validated}
+                    onSubmit={(event) => this.handleSubmit(event) }>
 
                     <Modal.Body>
 
@@ -85,6 +87,7 @@ class EditModal extends Component {
                     <Modal.Footer>
                         <Button
                             variant="secondary"
+                            type="button"
                             onClick={ () => this.props.onDecline() }>
                             Close
                         </Button>

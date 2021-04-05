@@ -10,9 +10,10 @@ class ViewModal extends Component {
         const film = this.props.film;
         return (
             <Modal
+                style={{wordWrap: 'break-word'}}
                 show={ true }
                 onHide={ () => this.props.onDecline() }>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton >
                     <Modal.Title>
                         {film.title}
                     </Modal.Title>
@@ -24,6 +25,7 @@ class ViewModal extends Component {
                 <Modal.Footer>
                     <Button
                         variant="secondary"
+                        type="button"
                         onClick={ () => this.props.onDecline() }>
                         Close
                     </Button>
