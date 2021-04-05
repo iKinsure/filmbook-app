@@ -3,6 +3,7 @@ import {CardGroup, Container} from "react-bootstrap";
 import FilmCard from "./FilmCard";
 import DeleteModal from "./DeleteModal";
 import EditModal from "./EditModal";
+import ViewModal from "./ViewModal";
 
 class Album extends React.Component {
 
@@ -63,9 +64,14 @@ class Album extends React.Component {
     handleCardClick(film, method) {
         switch (method) {
             case 0:
+                this.modal = <ViewModal
+                    film={film}
+                    onDecline={ () => this.setState({showModal: false}) }/>
+                this.setState({ showModal: true });
                 break;
             case 1:
-                this.modal = <EditModal film={film}
+                this.modal = <EditModal
+                    film={film}
                     onAccept={ (f) => this.handleUpdate(film.id, f) }
                     onDecline={ () => this.setState({showModal: false}) }/>
                 this.setState({ showModal: true });

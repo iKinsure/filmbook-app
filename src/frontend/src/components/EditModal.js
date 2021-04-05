@@ -33,6 +33,7 @@ class EditModal extends Component {
         return (
 
             <Modal
+                backdrop="static"
                 show={ true }
                 onHide={ () => this.props.onDecline() }>
 
