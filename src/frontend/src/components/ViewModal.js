@@ -13,7 +13,7 @@ class ViewModal extends Component {
                 style={{wordWrap: 'break-word'}}
                 show={ true }
                 onHide={ () => this.props.onDecline() }>
-                <Modal.Header closeButton >
+                <Modal.Header closeButton>
                     <Modal.Title>
                         {film.title}
                     </Modal.Title>
