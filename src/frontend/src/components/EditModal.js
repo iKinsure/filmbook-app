@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import {Button, Form, Modal} from "react-bootstrap";
 
+/**
+ * @props onAccept(), onDecline(), film
+ */
 class EditModal extends Component {
-
 
     constructor(props) {
         super(props);

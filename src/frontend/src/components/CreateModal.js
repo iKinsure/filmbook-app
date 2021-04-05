@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {Button, Form, Modal} from "react-bootstrap";
 
+/**
+ * @props onDecline(), onAccept()
+ */
 class CreateModal extends Component {
 
     constructor(props) {

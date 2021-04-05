@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { Container } from "react-bootstrap";
+import {Navbar} from "react-bootstrap";
 
 class Footer extends Component {
 
     render() {
         return (
             <footer className="text-muted">
-                <Container>
-                    <h3>To do footer</h3>
-                </Container>
+                <Navbar bg="dark" variant="dark" className="justify-content-center">
+                    <p>&copy; {new Date().getFullYear()} iKinsure</p>
+                </Navbar>
             </footer>
         );
     }

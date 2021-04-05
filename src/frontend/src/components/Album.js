@@ -59,20 +59,20 @@ class Album extends React.Component {
 
     handleCardClick(film, method) {
         switch (method) {
-            case 0:
+            case 'view':
                 this.modal = <ViewModal
                     film={film}
                     onDecline={ () => this.setState({showModal: false}) }/>
                 this.setState({ showModal: true });
                 break;
-            case 1:
+            case 'edit':
                 this.modal = <EditModal
                     film={film}
                     onAccept={ (f) => this.handleUpdate(film.id, f) }
                     onDecline={ () => this.setState({showModal: false}) }/>
                 this.setState({ showModal: true });
                 break;
-            case 2:
+            case 'delete':
                 this.modal = <DeleteModal
                     onAccept={ () => this.handleDelete(film) }
                     onDecline={ () => this.setState({showModal: false}) }/>

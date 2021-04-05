@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {Button, Card} from "react-bootstrap";
 
+/**
+ * @props film, onClick()
+ */
 class FilmCard extends Component {
 
     render() {
@@ -22,17 +25,12 @@ class FilmCard extends Component {
                         {film.description}
                     </Card.Text>
 
-                    <Card.Link>
-                        <Button variant="primary" onClick={ () => this.props.onClick(film, 0) }>View</Button>
-                    </Card.Link>
-                    <Card.Link>
-                        <Button variant="primary" onClick={ () => this.props.onClick(film, 1) }>Edit</Button>
-                    </Card.Link>
-                    <Card.Link>
-                        <Button variant="primary" onClick={ () => this.props.onClick(film, 2) }>Delete</Button>
-                    </Card.Link>
-
                 </Card.Body>
+                <Card.Footer style={{display: 'flex', justifyContent: 'space-evenly'}}>
+                    <Button style={{width: '25%'}} size="sm" variant="secondary" onClick={ () => this.props.onClick(film, 'view') }>View</Button>
+                    <Button style={{width: '25%'}} size="sm" variant="secondary" onClick={ () => this.props.onClick(film, 'edit') }>Edit</Button>
+                    <Button style={{width: '25%'}} size="sm" variant="secondary" onClick={ () => this.props.onClick(film, 'delete') }>Delete</Button>
+                </Card.Footer>
             </Card>
         );
     }

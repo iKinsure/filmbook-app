@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {Button, Modal} from "react-bootstrap";
 
+/**
+ * @props onDecline(), onAccept()
+ */
 class DeleteModal extends Component {
 
     render() {

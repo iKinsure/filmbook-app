@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {Button, Modal} from "react-bootstrap";
 
+/**
+ * @props film, onDecline()
+ */
 class ViewModal extends Component {
 
     render() {
