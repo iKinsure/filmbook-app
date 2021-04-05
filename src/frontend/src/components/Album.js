@@ -1,6 +1,8 @@
 import React from "react";
-import {Button, CardDeck, CardGroup, Container, Modal, Row} from "react-bootstrap";
+import {CardGroup, Container} from "react-bootstrap";
 import FilmCard from "./FilmCard";
+import DeleteModal from "./DeleteModal";
+import EditModal from "./EditModal";
 
 class Album extends React.Component {
 
@@ -23,7 +25,6 @@ class Album extends React.Component {
             .then(json => this.setState({
                 films: json,
                 loaded: true,
-                film: undefined,
             }));
     }
 
@@ -35,8 +36,15 @@ class Album extends React.Component {
 
     }
 
-    async updateFilm(id) {
-
+    async updateFilm(id, film) {
+        await fetch(`api/films/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(film),
+        }).then(() => this.getFilms());
     }
 
     async deleteFilm(id) {
@@ -44,33 +52,12 @@ class Album extends React.Component {
             .then(() => this.getFilms());
     }
 
-    handleDelete(film) {
-        this.deleteFilm(film.id).then(r => this.setState({showModal: false}));
+    handleUpdate(id, film) {
+        this.updateFilm(id, film).then(r => this.setState({showModal: false}));
     }
 
-    createModal(modal) {
-        return (
-            <Modal
-                show={ this.state.showModal }
-                onHide={ () => this.setState({showModal: false}) }>
-                <Modal.Header closeButton>
-                    <Modal.Title>{ modal.title }</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{ modal.body }</Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        variant="secondary"
-                        onClick={ () => this.setState({showModal: false}) }>
-                        { modal.leftButton }
-                    </Button>
-                    <Button
-                        variant="primary"
-                        onClick={ () => this.handleDelete(this.film) }>
-                        { modal.rightButton }
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
+    handleDelete(film) {
+        this.deleteFilm(film.id).then(r => this.setState({showModal: false}));
     }
 
     handleCardClick(film, method) {
@@ -78,9 +65,15 @@ class Album extends React.Component {
             case 0:
                 break;
             case 1:
+                this.modal = <EditModal film={film}
+                    onAccept={ (f) => this.handleUpdate(film.id, f) }
+                    onDecline={ () => this.setState({showModal: false}) }/>
+                this.setState({ showModal: true });
                 break;
             case 2:
-                this.film = film;
+                this.modal = <DeleteModal
+                    onAccept={ () => this.handleDelete(film) }
+                    onDecline={ () => this.setState({showModal: false}) }/>
                 this.setState({ showModal: true });
                 break;
             default:
@@ -105,18 +98,13 @@ class Album extends React.Component {
                     </CardGroup>
                 </Container>
 
-                { this.state.showModal ? this.createModal(deleteModal) : '' }
+                { this.state.showModal ? this.modal : '' }
 
             </React.Fragment>
         );
     }
 }
 
-const deleteModal = {
-    title: 'Confirm delete',
-    body: 'Are you sure you want to delete film?',
-    leftButton: 'Close',
-    rightButton: 'Delete',
-};
+
 
 export default Album;

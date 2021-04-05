@@ -34,10 +34,22 @@ public class FilmService {
     }
 
     public Film updateFilm(Long id, Film film) {
-        repository.findById(id).orElseThrow(this::notFoundExc);
-        film.setId(id);
-        repository.save(film);
-        return film;
+        Film previous = repository.findById(id).orElseThrow(this::notFoundExc);
+
+        if (film.getTitle() != null) {
+            previous.setTitle(film.getTitle());
+        }
+
+        if (film.getReleaseDate() != null) {
+            previous.setReleaseDate(film.getReleaseDate());
+        }
+
+        if (film.getDescription() != null) {
+            previous.setDescription(film.getDescription());
+        }
+
+        repository.save(previous);
+        return previous;
     }
 
     public void deleteFilmById(Long id) {
