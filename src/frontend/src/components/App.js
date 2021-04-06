@@ -94,10 +94,14 @@ class App extends React.Component  {
     }
 
     render() {
+        const mainStyle = {
+            minHeight: 'calc(100vh - 112px)',
+            background: 'linear-gradient(90deg, rgba(28,64,107,0.5) 0%, rgba(66,93,157,0.3) 50%, rgba(28,64,107,0.5) 100%)',
+        };
         return (
             <React.Fragment>
                 <Top onClick={ (film, method) => this.handleModalClick(film, method)} />
-                    <main>
+                    <main style={mainStyle}>
                       <Album
                           films={this.state.films}
                           onClick={ (film, method) => this.handleModalClick(film, method) } />

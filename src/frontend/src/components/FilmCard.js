@@ -8,8 +8,15 @@ class FilmCard extends Component {
 
     render() {
         const film = this.props.film;
+        const cardStyle = {
+            minWidth: '300px',
+            margin: '5px',
+            border: 'solid 2px lightgrey',
+            zIndex: '2',
+            borderRadius: '5px',
+        }
         return (
-            <Card style={{ minWidth: '300px', margin: '5px', border: 'solid 1px lightgrey'}} >
+            <Card style={cardStyle} >
                 <Card.Img variant="top" src="" />
                 <Card.Body>
 

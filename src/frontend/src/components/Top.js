@@ -8,7 +8,7 @@ class Top extends Component {
 
     render() {
         return (
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="dark" variant="dark" style={{boxShadow: '0 0 50px 6px', zIndex: '1'}}>
 
                 <Navbar.Brand>
                     <svg style={{ marginBottom: '4px' }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-film" viewBox="0 0 16 16">
