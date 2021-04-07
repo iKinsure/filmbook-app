@@ -16,3 +16,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  main:
+    banner-mode: off

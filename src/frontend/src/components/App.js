@@ -7,6 +7,7 @@ import ViewModal from "./ViewModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 import {createFilm, deleteFilm, getFilms, updateFilm} from "../config/fetching";
+import ErrorModal from "./ErrorModal";
 
 
 class App extends React.Component  {
@@ -37,28 +38,34 @@ class App extends React.Component  {
                     loaded: true,
                 })
             })
-            .catch(e => console.warn(e));
+            .catch(e => this.handleError(e, 'Failed to get list of films'));
     }
 
     handleCreate(film) {
         createFilm(film)
-            .then(() => this.handleGet())
-            .catch(e => console.warn(e));
-        this.turnOffModal();
+            .then(() => {
+                this.handleGet();
+                this.turnOffModal();
+            })
+            .catch(e => this.handleError(e, 'Failed to create film'));
     }
 
     handleUpdate(id, film) {
         updateFilm(id, film)
-            .then(() => this.handleGet())
-            .catch(e => console.warn(e));
-        this.turnOffModal();
+            .then(() => {
+                this.handleGet();
+                this.turnOffModal();
+            })
+            .catch(e => this.handleError(e, 'Failed to update film'));
     }
 
     handleDelete(film) {
         deleteFilm(film.id)
-            .then(() => this.handleGet())
-            .catch(e => console.warn(e));
-        this.turnOffModal();
+            .then(() => {
+                this.handleGet();
+                this.turnOffModal();
+            })
+            .catch(e => this.handleError(e, 'Failed to delete film'));
     }
 
     handleModalClick(film, method) {
@@ -93,6 +100,13 @@ class App extends React.Component  {
         }
     }
 
+    handleError(e, msg) {
+        this.modal = <ErrorModal
+            onDecline={ () => this.turnOffModal() }
+            body={ e.name + ': ' + e.message + ': ' + msg} />;
+        this.setState({ showModal: true });
+    }
+
     render() {
         const mainStyle = {
             minHeight: 'calc(100vh - 112px)',
@@ -102,12 +116,14 @@ class App extends React.Component  {
             <React.Fragment>
                 <Top onClick={ (film, method) => this.handleModalClick(film, method)} />
                     <main style={mainStyle}>
+
+                        { this.state.showModal ? this.modal : '' }
+
                       <Album
                           films={this.state.films}
                           onClick={ (film, method) => this.handleModalClick(film, method) } />
                     </main>
                     <Footer />
-                { this.state.showModal ? this.modal : '' }
             </React.Fragment>
         );
     }
