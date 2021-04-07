@@ -23,6 +23,7 @@ public class Image {
     private String type;
 
     @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     @Column(name = "data", nullable = false, columnDefinition = "BYTEA")
     private byte[] data;
 

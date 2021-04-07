@@ -9,6 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ImageService {
@@ -20,8 +22,11 @@ public class ImageService {
         this.repository = repository;
     }
 
-    public Image createImage(MultipartFile file) throws IOException {
-        String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+    public Image upload(MultipartFile file) throws IOException {
+        String[] names = StringUtils
+                .cleanPath(Objects.requireNonNull(file.getOriginalFilename()))
+                .split("/.");
+        String filename = UUID.randomUUID().toString() + "." + names[names.length - 1];
         Image image = new Image(filename, file.getContentType(), file.getBytes());
         return repository.save(image);
     }
@@ -31,7 +36,6 @@ public class ImageService {
                 .findById(id)
                 .orElseThrow(this::notFoundExc);
     }
-
 
     private ResponseStatusException notFoundExc() {
         return new ResponseStatusException(

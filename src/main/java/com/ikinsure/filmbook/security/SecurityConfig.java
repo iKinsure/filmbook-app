@@ -32,19 +32,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 csrf().disable().authorizeRequests()
 
                 // configure permissions
-                .antMatchers(HttpMethod.GET, "/index*", "/static/**", "/*.js", "/*.json", "/*.ico", "/*.png")
-                    .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/films/**")
-//                    .hasAuthority(FILM_WRITE.name())
-                    .permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/films/**")
-//                    .hasAuthority(FILM_WRITE.name())
-                    .permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/films/**")
-//                    .hasAuthority(FILM_WRITE.name())
-                    .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/films/**")
+//                .antMatchers(HttpMethod.GET, "/index*", "/static/**", "/*.js", "/*.json", "/*.ico", "/*.png")
+//                    .permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/films**")
 //                    .hasAuthority(FILM_READ.name())
+//                .antMatchers(HttpMethod.POST, "/api/films**")
+//                   .hasAuthority(FILM_WRITE.name())
+//                .antMatchers(HttpMethod.PUT, "/api/films**")
+//                    .hasAuthority(FILM_WRITE.name())
+//                .antMatchers(HttpMethod.DELETE, "/api/films**")
+//                    .hasAuthority(FILM_WRITE.name())
+
+
+                .antMatchers("/**") // TODO: REMOVE
                     .permitAll()
 
                 .anyRequest().authenticated()
@@ -61,16 +61,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
-                createUser("user", "password", Role.USER.name()),
-                createUser("admin", "password", Role.ADMIN.name())
+                createUser("user", "password", Role.USER),
+                createUser("admin", "password", Role.ADMIN)
         );
     }
 
-    private UserDetails createUser(String username, String password, String... roles) {
+    private UserDetails createUser(String username, String password, Role role) {
         return User.builder()
                 .username(username)
                 .password(encoder.encode(password))
-                .roles(roles)
+                .roles(role.name())
+                .authorities(role.getAuthorities())
                 .build();
     }
 }

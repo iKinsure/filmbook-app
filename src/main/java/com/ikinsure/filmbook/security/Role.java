@@ -17,9 +17,6 @@ public enum Role {
     ),
     USER(
             FILM_READ
-    ),
-    GUEST(
-
     );
 
     private final Set<Permission> permissions;
