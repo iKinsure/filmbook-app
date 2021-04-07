@@ -1,5 +1,7 @@
 package com.ikinsure.filmbook.film;
 
+import com.ikinsure.filmbook.image.Image;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -22,6 +24,9 @@ public class Film {
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     public Film() {
 
@@ -65,17 +70,29 @@ public class Film {
         this.releaseDate = releaseDate;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Film film = (Film) o;
-        return Objects.equals(id, film.id) && Objects.equals(title, film.title) && Objects.equals(releaseDate, film.releaseDate) && Objects.equals(description, film.description);
+        return Objects.equals(id, film.id) &&
+                Objects.equals(title, film.title) &&
+                Objects.equals(releaseDate, film.releaseDate) &&
+                Objects.equals(description, film.description) &&
+                Objects.equals(imageUrl, film.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, releaseDate, description);
+        return Objects.hash(id, title, releaseDate, description, imageUrl);
     }
 
     @Override
@@ -85,6 +102,7 @@ public class Film {
                 ", title='" + title + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 }

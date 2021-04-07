@@ -15,9 +15,11 @@ class FilmCard extends Component {
             zIndex: '2',
             borderRadius: '5px',
         }
+        film.image = 'http://localhost:8080/images/1';
+        console.log(film.image);
         return (
             <Card style={cardStyle} >
-                <Card.Img variant="top" src="" />
+                <Card.Img variant="top" src={film.image} />
                 <Card.Body>
 
                     <Card.Title>

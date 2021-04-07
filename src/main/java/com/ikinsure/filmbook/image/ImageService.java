@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,6 +22,8 @@ public class ImageService {
     }
 
     public Image upload(MultipartFile file) throws IOException {
+
+        // rename and get the file extension
         String[] names = StringUtils
                 .cleanPath(Objects.requireNonNull(file.getOriginalFilename()))
                 .split("/.");
@@ -42,5 +43,9 @@ public class ImageService {
                 HttpStatus.NOT_FOUND,
                 "Unable to find image resource"
         );
+    }
+
+    public void deleteImageById(Long id) {
+        repository.deleteById(id);
     }
 }

@@ -47,6 +47,10 @@ public class FilmService {
             previous.setDescription(film.getDescription());
         }
 
+        if (film.getImageUrl() != null) {
+            previous.setImageUrl(film.getImageUrl());
+        }
+
         repository.save(previous);
         return previous;
     }

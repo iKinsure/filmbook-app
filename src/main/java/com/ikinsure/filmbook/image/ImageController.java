@@ -10,10 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 @Controller
-@RequestMapping("/images")
+@RequestMapping("/api/images")
 public class ImageController {
 
     private final ImageService service;
@@ -23,13 +22,15 @@ public class ImageController {
         this.service = service;
     }
 
-    @PostMapping("/upload")
+    @PostMapping("")
     public ResponseEntity<?> upload(@RequestParam MultipartFile file) throws IOException {
         Image image = service.upload(file);
         HashMap<String, String> map = new HashMap<>();
-        map.put("id", String.valueOf(image.getId()));
+        String id = String.valueOf(image.getId());
+        map.put("id", id);
         map.put("name", image.getName());
         map.put("type", image.getType());
+        map.put("imageUrl", "/api/images/" + id);
         return ResponseEntity.ok(map);
     }
 
@@ -39,6 +40,11 @@ public class ImageController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getName() + "\"")
                 .body(image.getData());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteImage(@PathVariable Long id) {
+        service.deleteImageById(id);
     }
 
 }

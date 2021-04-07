@@ -89,7 +89,6 @@ public class Image {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", data=" + Arrays.toString(data) +
                 '}';
     }
 }
