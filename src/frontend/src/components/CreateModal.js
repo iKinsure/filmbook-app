@@ -15,6 +15,7 @@ class CreateModal extends Component {
                 releaseDate: '',
                 description: '',
             },
+            file: null,
         }
     }
 
@@ -24,7 +25,7 @@ class CreateModal extends Component {
             event.stopPropagation();
         }
         this.setState({validated: true});
-        this.props.onAccept(this.state.film);
+        this.props.onAccept(this.state.film, this.state.file);
     }
 
     handleChange(event) {
@@ -33,10 +34,17 @@ class CreateModal extends Component {
         this.setState({film: film});
     }
 
+    handleFileChange(event) {
+        this.setState({
+            file: event.target.files[0],
+        });
+    }
+
     render() {
         const onDecline = () => this.props.onDecline();
         const onChange = event => this.handleChange(event);
         const onSubmit = event => this.handleSubmit(event);
+        const onFileChange = event => this.handleFileChange(event);
         return (
             <Modal
                 backdrop="static"
@@ -90,7 +98,7 @@ class CreateModal extends Component {
                             <Form.Label>Image:</Form.Label>
                             <Form.File
                                 required
-                                disabled={true}
+                                onChange={onFileChange}
                             />
                         </Form.Group>
 

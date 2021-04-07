@@ -6,7 +6,7 @@ import CreateModal from "./CreateModal";
 import ViewModal from "./ViewModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import {createFilm, deleteFilm, getFilms, updateFilm} from "../config/fetching";
+import {createFilm, deleteFilm, getFilms, updateFilm, uploadImage} from "../config/fetching";
 import ErrorModal from "./ErrorModal";
 
 
@@ -41,13 +41,19 @@ class App extends React.Component  {
             .catch(e => this.handleError(e, 'Failed to get list of films'));
     }
 
-    handleCreate(film) {
-        createFilm(film)
-            .then(() => {
-                this.handleGet();
-                this.turnOffModal();
+    handleCreate(film, file) {
+        uploadImage(file)
+            .then(res => res.json())
+            .then(json => {
+                film.imageUrl = json.imageUrl;
+                createFilm(film)
+                    .then(() => {
+                        this.handleGet();
+                        this.turnOffModal();
+                    })
+                    .catch(e => this.handleError(e, 'Failed to create film'));
             })
-            .catch(e => this.handleError(e, 'Failed to create film'));
+            .catch(e => this.handleError(e, 'Failed to upload image'));
     }
 
     handleUpdate(id, film) {
@@ -72,7 +78,7 @@ class App extends React.Component  {
         switch (method) {
             case 'create':
                 this.modal = <CreateModal
-                    onAccept={ (f) => this.handleCreate(f) }
+                    onAccept={ (video, file) => this.handleCreate(video, file) }
                     onDecline={ () => this.turnOffModal() }/>;
                 this.setState({ showModal: true });
                 break;

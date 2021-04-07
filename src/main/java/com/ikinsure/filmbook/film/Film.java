@@ -1,7 +1,5 @@
 package com.ikinsure.filmbook.film;
 
-import com.ikinsure.filmbook.image.Image;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;

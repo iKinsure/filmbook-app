@@ -45,3 +45,12 @@ export const deleteFilm = async (id) => {
         method: 'DELETE',
     }).then(check);
 }
+
+export const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return await fetch('/api/images', {
+        method: 'POST',
+        body: formData,
+    }).then(check);
+}

@@ -15,11 +15,9 @@ class FilmCard extends Component {
             zIndex: '2',
             borderRadius: '5px',
         }
-        film.image = 'http://localhost:8080/images/1';
-        console.log(film.image);
         return (
             <Card style={cardStyle} >
-                <Card.Img variant="top" src={film.image} />
+                <Card.Img variant="top" src={film.imageUrl} />
                 <Card.Body>
 
                     <Card.Title>
@@ -30,9 +28,9 @@ class FilmCard extends Component {
                         {film.releaseDate}
                     </Card.Subtitle>
 
-                    <Card.Text>
-                        {film.description}
-                    </Card.Text>
+                    {/*<Card.Text>*/}
+                    {/*    {film.description}*/}
+                    {/*</Card.Text>*/}
 
                 </Card.Body>
                 <Card.Footer style={{display: 'flex', justifyContent: 'space-evenly'}}>
