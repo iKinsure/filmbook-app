@@ -36,7 +36,7 @@ class App extends React.Component  {
                 this.setState({
                     films: json,
                     loaded: true,
-                })
+                });
             })
             .catch(e => this.handleError(e, 'Failed to get list of films'));
     }

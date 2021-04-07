@@ -34,12 +34,14 @@ class CreateModal extends Component {
     }
 
     render() {
+        const onDecline = () => this.props.onDecline();
+        const onChange = event => this.handleChange(event);
+        const onSubmit = event => this.handleSubmit(event);
         return (
-
             <Modal
                 backdrop="static"
                 show={ true }
-                onHide={ () => this.props.onDecline() }>
+                onHide={onDecline}>
 
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -50,35 +52,46 @@ class CreateModal extends Component {
                 <Form
                     id="create-form"
                     validated={this.state.validated}
-                    onSubmit={(event) => this.handleSubmit(event)}>
+                    onSubmit={onSubmit}>
 
                     <Modal.Body>
 
                         <Form.Group controlId="title">
                             <Form.Label>Title:</Form.Label>
                             <Form.Control
+                                required
                                 type="text"
                                 placeholder={''}
                                 value={this.state.film.title}
-                                onChange={(event) => this.handleChange(event)} />
+                                onChange={onChange} />
                         </Form.Group>
 
                         <Form.Group controlId="releaseDate">
                             <Form.Label>Release date:</Form.Label>
                             <Form.Control
+                                required
                                 type="date"
                                 placeholder={''}
                                 value={this.state.film.releaseDate}
-                                onChange={(event) => this.handleChange(event)} />
+                                onChange={onChange} />
                         </Form.Group>
 
                         <Form.Group controlId="description">
                             <Form.Label>Description: </Form.Label>
                             <Form.Control
+                                required
                                 as="textarea" rows={3}
                                 placeholder={''}
                                 value={this.state.film.description}
-                                onChange={(event) => this.handleChange(event)} />
+                                onChange={onChange} />
+                        </Form.Group>
+
+                        <Form.Group controlId="image">
+                            <Form.Label>Image:</Form.Label>
+                            <Form.File
+                                required
+                                disabled={true}
+                            />
                         </Form.Group>
 
                     </Modal.Body>
@@ -87,7 +100,7 @@ class CreateModal extends Component {
                         <Button
                             variant="secondary"
                             type="button"
-                            onClick={ () => this.props.onDecline() }>
+                            onClick={onDecline}>
                             Close
                         </Button>
                         <Button

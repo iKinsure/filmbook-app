@@ -8,9 +8,14 @@ class EditModal extends Component {
 
     constructor(props) {
         super(props);
+        const film = this.props.film;
         this.state = {
             validated: false,
-            film: {},
+            film: {
+                title: film.title,
+                releaseDate: film.releaseDate,
+                description: film.description,
+            },
         }
     }
 
@@ -31,12 +36,15 @@ class EditModal extends Component {
 
     render() {
         const film = this.props.film;
+        const onDecline = () => this.props.onDecline();
+        const onSubmit = event => this.handleSubmit(event);
+        const onChange = event => this.handleChange(event);
         return (
 
             <Modal
                 backdrop="static"
                 show={ true }
-                onHide={ () => this.props.onDecline() }>
+                onHide={onDecline}>
 
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -47,7 +55,7 @@ class EditModal extends Component {
                 <Form
                     id="edit-form"
                     validated={this.state.validated}
-                    onSubmit={(event) => this.handleSubmit(event) }>
+                    onSubmit={onSubmit}>
 
                     <Modal.Body>
 
@@ -57,7 +65,7 @@ class EditModal extends Component {
                                 type="text"
                                 placeholder={film.title}
                                 value={this.state.film.title}
-                                onChange={(event) => this.handleChange(event)} />
+                                onChange={onChange} />
                         </Form.Group>
 
                         <Form.Group controlId="releaseDate">
@@ -66,7 +74,7 @@ class EditModal extends Component {
                                 type="date"
                                 placeholder={film.releaseDate}
                                 value={this.state.film.releaseDate}
-                                onChange={(event) => this.handleChange(event)} />
+                                onChange={onChange} />
                         </Form.Group>
 
                         <Form.Group controlId="description">
@@ -75,7 +83,14 @@ class EditModal extends Component {
                                 as="textarea" rows={3}
                                 placeholder={film.description}
                                 value={this.state.film.description}
-                                onChange={(event) => this.handleChange(event)} />
+                                onChange={onChange} />
+                        </Form.Group>
+
+                        <Form.Group controlId="image">
+                            <Form.Label>Image:</Form.Label>
+                            <Form.File
+                                disabled={true}
+                            />
                         </Form.Group>
 
                         <Form.Text className="text-muted">
@@ -88,7 +103,7 @@ class EditModal extends Component {
                         <Button
                             variant="secondary"
                             type="button"
-                            onClick={ () => this.props.onDecline() }>
+                            onClick={onDecline}>
                             Close
                         </Button>
                         <Button
