@@ -39,8 +39,8 @@ public class Film {
      * avoid in json parsing
      */
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "image_id", nullable = false)
     private Image image;
 
     /**
@@ -59,10 +59,11 @@ public class Film {
 
     }
 
-    public Film(String title, LocalDate releaseDate, String description) {
+    public Film(String title, LocalDate releaseDate, String description, Image image) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.description = description;
+        this.image = image;
     }
 
     public Long getId() {
@@ -97,6 +98,9 @@ public class Film {
         this.releaseDate = releaseDate;
     }
 
+    /**
+     * ignore deserialization for image
+     */
     @JsonIgnore
     public void setImage(Image image) {
         this.image = image;

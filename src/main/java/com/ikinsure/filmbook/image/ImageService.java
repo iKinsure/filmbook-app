@@ -26,8 +26,9 @@ public class ImageService {
         // rename and get the file extension
         String[] names = StringUtils
                 .cleanPath(Objects.requireNonNull(file.getOriginalFilename()))
-                .split("/.");
+                .split("\\.");
         String filename = UUID.randomUUID().toString() + "." + names[names.length - 1];
+
         Image image = new Image(filename, file.getContentType(), file.getBytes());
         return repository.save(image);
     }

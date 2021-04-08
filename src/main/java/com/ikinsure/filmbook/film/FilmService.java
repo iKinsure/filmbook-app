@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
 public class FilmService {
@@ -30,36 +28,62 @@ public class FilmService {
     public Film getFilmById(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow(this::notFoundExc);
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Unable to find film resource " + id));
     }
 
     public Film createFilm(Film film) {
+
+        // find image by given id
         Long imageId = film.getImageId();
         Image image = imageRepository
                 .findById(imageId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_ACCEPTABLE,
                         "Invalid image id " + imageId));
+
+        // set relation between image and film
         film.setImage(image);
+
         return repository.save(film);
     }
 
-    public Film updateFilm(Long id, Film film) {
-        Film previous = repository.findById(id).orElseThrow(this::notFoundExc);
+    public Film updateFilm(Long id, Film newFilm) {
 
-        if (film.getTitle() != null) {
-            previous.setTitle(film.getTitle());
+        // get film to update by id
+        Film previous = repository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Unable to find film resource " + id));
+
+        if (newFilm.getImageId() != null) {
+
+            // get updated image
+            Long imageId = newFilm.getImageId();
+            Image image = imageRepository
+                    .findById(imageId)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_ACCEPTABLE,
+                            "Invalid image id " + imageId));
+
+            // update image
+            previous.setImageId(imageId);
+            previous.setImage(image);
         }
 
-        if (film.getReleaseDate() != null) {
-            previous.setReleaseDate(film.getReleaseDate());
+        if (newFilm.getTitle() != null) {
+            previous.setTitle(newFilm.getTitle());
         }
 
-        if (film.getDescription() != null) {
-            previous.setDescription(film.getDescription());
+        if (newFilm.getReleaseDate() != null) {
+            previous.setReleaseDate(newFilm.getReleaseDate());
         }
 
-
+        if (newFilm.getDescription() != null) {
+            previous.setDescription(newFilm.getDescription());
+        }
 
         repository.save(previous);
         return previous;
@@ -69,11 +93,5 @@ public class FilmService {
         repository.deleteById(id);
     }
 
-    private ResponseStatusException notFoundExc() {
-        return new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Unable to find film resource"
-        );
-    }
 
 }

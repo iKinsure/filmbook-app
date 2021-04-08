@@ -26,8 +26,7 @@ public class ImageController {
     public ResponseEntity<?> upload(@RequestParam MultipartFile file) throws IOException {
         Image image = service.upload(file);
         HashMap<String, String> map = new HashMap<>();
-        String id = String.valueOf(image.getId());
-        map.put("imageId", id);
+        map.put("imageId", String.valueOf(image.getId()));
         map.put("name", image.getName());
         map.put("type", image.getType());
         return ResponseEntity.ok(map);

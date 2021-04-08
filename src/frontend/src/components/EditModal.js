@@ -8,14 +8,14 @@ class EditModal extends Component {
 
     constructor(props) {
         super(props);
-        const film = this.props.film;
         this.state = {
             validated: false,
             film: {
-                title: film.title,
-                releaseDate: film.releaseDate,
-                description: film.description,
+                title: undefined,
+                releaseDate: undefined,
+                description: undefined,
             },
+            file: null,
         }
     }
 
@@ -25,7 +25,7 @@ class EditModal extends Component {
             event.stopPropagation();
         }
         this.setState({validated: true});
-        this.props.onAccept(this.state.film);
+        this.props.onAccept(this.state.film, this.state.file);
     }
 
     handleChange(event) {
@@ -34,11 +34,18 @@ class EditModal extends Component {
         this.setState({film: film});
     }
 
+    handleFileChange(event) {
+        this.setState({
+            file: event.target.files[0],
+        });
+    }
+
     render() {
         const film = this.props.film;
         const onDecline = () => this.props.onDecline();
         const onSubmit = event => this.handleSubmit(event);
         const onChange = event => this.handleChange(event);
+        const onFileChange = event => this.handleFileChange(event);
         return (
 
             <Modal
@@ -89,7 +96,7 @@ class EditModal extends Component {
                         <Form.Group controlId="image">
                             <Form.Label>Image:</Form.Label>
                             <Form.File
-                                disabled={true}
+                                onChange={onFileChange}
                             />
                         </Form.Group>
 

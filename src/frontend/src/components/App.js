@@ -56,13 +56,28 @@ class App extends React.Component  {
             .catch(e => this.handleError(e, 'Failed to upload image'));
     }
 
-    handleUpdate(id, film) {
-        updateFilm(id, film)
-            .then(() => {
-                this.handleGet();
-                this.turnOffModal();
-            })
-            .catch(e => this.handleError(e, 'Failed to update film'));
+    handleUpdate(id, film, file) {
+        if (file === null) {
+            updateFilm(id, film)
+                .then(() => {
+                    this.handleGet();
+                    this.turnOffModal();
+                })
+                .catch(e => this.handleError(e, 'Failed to update film'));
+        } else {
+            uploadImage(file)
+                .then(res => res.json())
+                .then(json => {
+                    film.imageId = json.imageId;
+                    updateFilm(id, film)
+                        .then(() => {
+                            this.handleGet();
+                            this.turnOffModal();
+                        })
+                        .catch(e => this.handleError(e, 'Failed to update film'));
+                })
+                .catch(e => this.handleError(e, 'Failed to upload image'));
+        }
     }
 
     handleDelete(film) {
@@ -91,7 +106,7 @@ class App extends React.Component  {
             case 'edit':
                 this.modal = <EditModal
                     film={film}
-                    onAccept={ (f) => this.handleUpdate(film.id, f) }
+                    onAccept={ (video, file) => this.handleUpdate(film.id, video, file) }
                     onDecline={ () => this.turnOffModal() }/>;
                 this.setState({ showModal: true });
                 break;
