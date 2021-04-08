@@ -1,21 +1,26 @@
 package com.ikinsure.filmbook.film;
 
+import com.ikinsure.filmbook.image.Image;
+import com.ikinsure.filmbook.image.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class FilmService {
 
     private final FilmRepository repository;
+    private final ImageRepository imageRepository;
 
     @Autowired
-    public FilmService(FilmRepository repository) {
+    public FilmService(FilmRepository repository, ImageRepository imageRepository) {
         this.repository = repository;
+        this.imageRepository = imageRepository;
     }
 
     public List<Film> getFilms() {
@@ -29,6 +34,13 @@ public class FilmService {
     }
 
     public Film createFilm(Film film) {
+        Long imageId = film.getImageId();
+        Image image = imageRepository
+                .findById(imageId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_ACCEPTABLE,
+                        "Invalid image id " + imageId));
+        film.setImage(image);
         return repository.save(film);
     }
 
@@ -47,9 +59,7 @@ public class FilmService {
             previous.setDescription(film.getDescription());
         }
 
-        if (film.getImageUrl() != null) {
-            previous.setImageUrl(film.getImageUrl());
-        }
+
 
         repository.save(previous);
         return previous;

@@ -6,6 +6,11 @@ const check = res => {
     return res;
 }
 
+export const getImage = id => {
+    return 'api/images/' + id;
+}
+
+
 export const getFilms = async () => {
     return await fetch('api/films').then(check);
 }

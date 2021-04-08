@@ -27,10 +27,9 @@ public class ImageController {
         Image image = service.upload(file);
         HashMap<String, String> map = new HashMap<>();
         String id = String.valueOf(image.getId());
-        map.put("id", id);
+        map.put("imageId", id);
         map.put("name", image.getName());
         map.put("type", image.getType());
-        map.put("imageUrl", "/api/images/" + id);
         return ResponseEntity.ok(map);
     }
 

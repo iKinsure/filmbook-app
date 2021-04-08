@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Button, Card} from "react-bootstrap";
+import {getImage} from "../config/fetching";
 
 /**
  * @props film, onClick()
@@ -17,7 +18,7 @@ class FilmCard extends Component {
         }
         return (
             <Card style={cardStyle} >
-                <Card.Img variant="top" src={film.imageUrl} />
+                <Card.Img variant="top" src={getImage(film.imageId)} />
                 <Card.Body>
 
                     <Card.Title>

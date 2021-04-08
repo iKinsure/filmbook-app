@@ -1,5 +1,10 @@
 package com.ikinsure.filmbook.film;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.ikinsure.filmbook.image.Image;
+import com.ikinsure.filmbook.security.Role;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -23,8 +28,32 @@ public class Film {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    /**
+     * field for request body (with resource server id)
+     * in database map image based on this imageId
+     */
+    @Transient
+    private Long imageId;
+
+    /**
+     * avoid in json parsing
+     */
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    /**
+     * for getting imageId from request body
+     * and for json serialization instead of image
+     */
+    public Long getImageId() {
+        return image == null ? imageId : image.getId();
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
+    }
 
     public Film() {
 
@@ -68,12 +97,9 @@ public class Film {
         this.releaseDate = releaseDate;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    @JsonIgnore
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     @Override
@@ -85,12 +111,13 @@ public class Film {
                 Objects.equals(title, film.title) &&
                 Objects.equals(releaseDate, film.releaseDate) &&
                 Objects.equals(description, film.description) &&
-                Objects.equals(imageUrl, film.imageUrl);
+                Objects.equals(imageId, film.imageId) &&
+                Objects.equals(image, film.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, releaseDate, description, imageUrl);
+        return Objects.hash(id, title, releaseDate, description, imageId, image);
     }
 
     @Override
@@ -100,7 +127,8 @@ public class Film {
                 ", title='" + title + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", imageId=" + imageId +
+                ", image=" + image +
                 '}';
     }
 }

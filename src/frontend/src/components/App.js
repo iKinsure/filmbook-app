@@ -45,7 +45,7 @@ class App extends React.Component  {
         uploadImage(file)
             .then(res => res.json())
             .then(json => {
-                film.imageUrl = json.imageUrl;
+                film.imageId = json.imageId;
                 createFilm(film)
                     .then(() => {
                         this.handleGet();

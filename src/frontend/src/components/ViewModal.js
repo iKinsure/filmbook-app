@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Button, Image, Modal} from "react-bootstrap";
+import {getImage} from "../config/fetching";
 
 /**
  * @props film, onDecline()
@@ -17,7 +18,7 @@ class ViewModal extends Component {
                 onHide={onDecline}>
 
                 <Modal.Body style={{margin: 'auto'}}>
-                    <Image src={film.imageUrl} fluid/>
+                    <Image src={getImage(film.imageId)} fluid/>
                 </Modal.Body>
 
                 <Modal.Header>
