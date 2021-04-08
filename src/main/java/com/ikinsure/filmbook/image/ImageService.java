@@ -22,6 +22,23 @@ public class ImageService {
     }
 
     public Image upload(MultipartFile file) throws IOException {
+        return repository.save(createImage(file));
+    }
+
+    public Image getImageById(Long id) {
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Unable to find image resource"));
+    }
+
+
+    public void deleteImageById(Long id) {
+        repository.deleteById(id);
+    }
+
+    private Image createImage(MultipartFile file) throws IOException {
 
         // rename and get the file extension
         String[] names = StringUtils
@@ -29,24 +46,7 @@ public class ImageService {
                 .split("\\.");
         String filename = UUID.randomUUID().toString() + "." + names[names.length - 1];
 
-        Image image = new Image(filename, file.getContentType(), file.getBytes());
-        return repository.save(image);
+        return new Image(filename, file.getContentType(), file.getBytes());
     }
 
-    public Image getImageById(Long id) {
-        return repository
-                .findById(id)
-                .orElseThrow(this::notFoundExc);
-    }
-
-    private ResponseStatusException notFoundExc() {
-        return new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Unable to find image resource"
-        );
-    }
-
-    public void deleteImageById(Long id) {
-        repository.deleteById(id);
-    }
 }

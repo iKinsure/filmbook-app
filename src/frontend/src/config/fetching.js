@@ -1,7 +1,8 @@
 
 const check = res => {
     if (!res.ok) {
-        throw new Error(res.statusText);
+        console.log(res);
+        throw new Error(res.statusText + ' ' + res.status);
     }
     return res;
 }

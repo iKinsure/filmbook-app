@@ -13,10 +13,13 @@ public enum Role {
 
     ADMIN(
             FILM_READ,
-            FILM_WRITE
+            FILM_WRITE,
+            IMAGE_READ,
+            IMAGE_WRITE
     ),
     USER(
-            FILM_READ
+            FILM_READ,
+            IMAGE_READ
     );
 
     private final Set<Permission> permissions;
