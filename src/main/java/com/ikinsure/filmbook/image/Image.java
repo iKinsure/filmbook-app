@@ -73,14 +73,15 @@ public class Image {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return Objects.equals(id, image.id) && Objects.equals(name, image.name) && Objects.equals(type, image.type) && Arrays.equals(data, image.data);
+        return Objects.equals(id, image.id) &&
+               Objects.equals(name, image.name) &&
+               Objects.equals(type, image.type) &&
+               Arrays.equals(data, image.data);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, name, type);
-        result = 31 * result + Arrays.hashCode(data);
-        return result;
+        return 31 * Objects.hash(id, name, type) + Arrays.hashCode(data);
     }
 
     @Override

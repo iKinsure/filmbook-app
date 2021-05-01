@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
@@ -21,47 +22,58 @@ public class FilmService {
         this.imageRepository = imageRepository;
     }
 
-    public List<Film> getFilms() {
-        return repository.findAll();
+    public List<FilmCommand> getFilms() {
+        return repository.findAll().stream()
+                .map(this::parseFilm)
+                .collect(Collectors.toList());
     }
 
-    public Film getFilmById(Long id) {
+    public FilmCommand getFilmById(Long id) {
         return repository
                 .findById(id)
+                .map(this::parseFilm)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Unable to find film resource " + id));
     }
 
-    public Film createFilm(Film film) {
+    public FilmCommand createFilm(FilmCommand command) {
 
         // find image by given id
-        Long imageId = film.getImageId();
+        Long imageId = command.getImageId();
         Image image = imageRepository
                 .findById(imageId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_ACCEPTABLE,
                         "Invalid image id " + imageId));
 
-        // set relation between image and film
-        film.setImage(image);
+        // set relation between image and film and create
+        Film film = repository.save(new Film(
+                command.getTitle(),
+                command.getReleaseDate(),
+                command.getDescription(),
+                image
+        ));
 
-        return repository.save(film);
+        // response
+        command.setId(film.getId());
+        return command;
     }
 
-    public Film updateFilm(Long id, Film newFilm) {
+    public FilmCommand updateFilm(Long id, FilmCommand command) {
 
         // get film to update by id
-        Film previous = repository
+        Film film = repository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Unable to find film resource " + id));
 
-        if (newFilm.getImageId() != null) {
+
+        if (command.getImageId() != null) {
 
             // get updated image
-            Long imageId = newFilm.getImageId();
+            Long imageId = command.getImageId();
             Image image = imageRepository
                     .findById(imageId)
                     .orElseThrow(() -> new ResponseStatusException(
@@ -69,29 +81,37 @@ public class FilmService {
                             "Invalid image id " + imageId));
 
             // update image
-            previous.setImageId(imageId);
-            previous.setImage(image);
+            film.setImage(image);
         }
 
-        if (newFilm.getTitle() != null) {
-            previous.setTitle(newFilm.getTitle());
+        if (command.getTitle() != null) {
+            film.setTitle(command.getTitle());
         }
 
-        if (newFilm.getReleaseDate() != null) {
-            previous.setReleaseDate(newFilm.getReleaseDate());
+        if (command.getReleaseDate() != null) {
+            film.setReleaseDate(command.getReleaseDate());
         }
 
-        if (newFilm.getDescription() != null) {
-            previous.setDescription(newFilm.getDescription());
+        if (command.getDescription() != null) {
+            film.setDescription(command.getDescription());
         }
 
-        repository.save(previous);
-        return previous;
+        repository.save(film);
+        return parseFilm(film);
     }
 
     public void deleteFilmById(Long id) {
         repository.deleteById(id);
     }
 
+    private FilmCommand parseFilm(Film film) {
+        return new FilmCommand(
+                film.getId(),
+                film.getTitle(),
+                film.getReleaseDate(),
+                film.getDescription(),
+                film.getImage().getId()
+        );
+    }
 
 }

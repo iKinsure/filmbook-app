@@ -54,8 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasAuthority(IMAGE_WRITE.name())
                 .antMatchers(DELETE, "/api/images/**")
                     .hasAuthority(IMAGE_WRITE.name())
-
-                .anyRequest().authenticated()
+                .anyRequest()
+                    .authenticated()
                 .and()
                 .httpBasic();
 

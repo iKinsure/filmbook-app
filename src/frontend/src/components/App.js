@@ -18,7 +18,7 @@ class App extends React.Component  {
             films: [],
             loaded: false,
             showModal: false,
-        }
+        };
     }
 
     turnOffModal() {

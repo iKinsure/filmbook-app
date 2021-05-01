@@ -3,6 +3,7 @@ package com.ikinsure.filmbook.film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,22 +18,23 @@ public class FilmController {
     }
 
     @GetMapping("")
-    public List<Film> getFilms() {
+    public List<FilmCommand> getFilms() {
         return service.getFilms();
     }
 
     @GetMapping("/{id}")
-    public Film getFilmById(@PathVariable Long id) {
+    public FilmCommand getFilmById(@PathVariable Long id) {
         return service.getFilmById(id);
     }
 
     @PostMapping("")
-    public Film createFilm(@RequestBody Film film) {
+    public FilmCommand createFilm(@RequestBody @Valid FilmCommand film) {
         return service.createFilm(film);
     }
 
     @PutMapping("/{id}")
-    public Film updateFilm(@PathVariable Long id, @RequestBody Film film) {
+    public FilmCommand updateFilm(@PathVariable Long id,
+                                  @RequestBody @Valid FilmCommand film) {
         return service.updateFilm(id, film);
     }
 

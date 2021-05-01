@@ -3,6 +3,7 @@ package com.ikinsure.filmbook.image;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class ImageController {
         this.service = service;
     }
 
-    @PostMapping("")
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> upload(@RequestParam MultipartFile file) throws IOException {
         Image image = service.upload(file);
         HashMap<String, String> map = new HashMap<>();
@@ -35,8 +36,9 @@ public class ImageController {
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
         Image image = service.getImageById(id);
+        String header = "attachment; filename=\"" + image.getName() + "\"";
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, header)
                 .body(image.getData());
     }
 

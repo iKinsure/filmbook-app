@@ -1,10 +1,6 @@
 package com.ikinsure.filmbook.film;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.ikinsure.filmbook.image.Image;
-import com.ikinsure.filmbook.security.Role;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -16,44 +12,21 @@ public class Film {
     @Id
     @SequenceGenerator(name = "film_sequence", sequenceName = "film_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "film_sequence")
-    @Column(name = "id", updatable = false)
+    @Column(updatable = false)
     private Long id;
 
-    @Column(name = "title", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
     @Column(name = "release_date", nullable = false, columnDefinition = "DATE")
     private LocalDate releaseDate;
 
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    /**
-     * field for request body (with resource server id)
-     * in database map image based on this imageId
-     */
-    @Transient
-    private Long imageId;
-
-    /**
-     * avoid in json parsing
-     */
-    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id", nullable = false)
     private Image image;
-
-    /**
-     * for getting imageId from request body
-     * and for json serialization instead of image
-     */
-    public Long getImageId() {
-        return image == null ? imageId : image.getId();
-    }
-
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
-    }
 
     public Film() {
 
@@ -82,14 +55,6 @@ public class Film {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LocalDate getReleaseDate() {
         return releaseDate;
     }
@@ -98,10 +63,18 @@ public class Film {
         this.releaseDate = releaseDate;
     }
 
-    /**
-     * ignore deserialization for image
-     */
-    @JsonIgnore
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
     public void setImage(Image image) {
         this.image = image;
     }
@@ -115,13 +88,12 @@ public class Film {
                 Objects.equals(title, film.title) &&
                 Objects.equals(releaseDate, film.releaseDate) &&
                 Objects.equals(description, film.description) &&
-                Objects.equals(imageId, film.imageId) &&
                 Objects.equals(image, film.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, releaseDate, description, imageId, image);
+        return Objects.hash(id, title, releaseDate, description, image);
     }
 
     @Override
@@ -131,7 +103,6 @@ public class Film {
                 ", title='" + title + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", description='" + description + '\'' +
-                ", imageId=" + imageId +
                 ", image=" + image +
                 '}';
     }
