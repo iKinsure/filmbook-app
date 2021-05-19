@@ -1,6 +1,5 @@
 package com.ikinsure.filmbook.image;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api/images")
@@ -26,11 +25,11 @@ public class ImageController {
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> upload(@RequestParam MultipartFile file) throws IOException {
         Image image = service.upload(file);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("imageId", String.valueOf(image.getId()));
-        map.put("name", image.getName());
-        map.put("type", image.getType());
-        return ResponseEntity.ok(map);
+        return ResponseEntity.ok(Map.of(
+                "imageId", String.valueOf(image.getId()),
+                "name", image.getName(),
+                "type", image.getType()
+        ));
     }
 
     @GetMapping("/{id}")

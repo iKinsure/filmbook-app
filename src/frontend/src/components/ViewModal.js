@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Button, Image, Modal} from "react-bootstrap";
-import {getImage} from "../config/fetching";
 
 /**
  * @props film, onDecline()

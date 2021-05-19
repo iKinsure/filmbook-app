@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -40,10 +41,21 @@ public class ImageService {
 
     private Image createImage(MultipartFile file) throws IOException {
 
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_ACCEPTABLE,
                     "File cannot be empty");
+        }
+
+        Set<String> types = Set.of(
+                "image/webp",
+                "image/png",
+                "image/jpeg"
+        );
+        if (!types.contains(file.getContentType())) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_ACCEPTABLE,
+                    "File is not legal image");
         }
 
         // rename and get the file extension
