@@ -97,6 +97,8 @@ class CreateModal extends Component {
                         <Form.Group controlId="image">
                             <Form.Label>Image:</Form.Label>
                             <Form.File
+                                type="file"
+                                accept="image/*"
                                 required
                                 onChange={onFileChange}
                             />

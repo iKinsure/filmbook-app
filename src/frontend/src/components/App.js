@@ -6,7 +6,7 @@ import CreateModal from "./CreateModal";
 import ViewModal from "./ViewModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import {createFilm, deleteFilm, getFilms, updateFilm, uploadImage} from "../config/fetching";
+import {createFilm, deleteFilm, getFilms, getImage, updateFilm, uploadImage} from "../config/fetching";
 import ErrorModal from "./ErrorModal";
 
 
@@ -29,16 +29,24 @@ class App extends React.Component  {
         this.handleGet();
     }
 
-    handleGet() {
-        getFilms()
+    async handleGet() {
+        let films;
+        await getFilms()
             .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    films: json,
-                    loaded: true,
-                });
-            })
+            .then(json => films = json)
             .catch(e => this.handleError(e, 'Failed to get list of films'));
+        for (let i = 0; i < films.length; i++) {
+            let image;
+            await fetch(getImage(films[i].imageId))
+                .then(res => res.blob())
+                .then(img => image = URL.createObjectURL(img))
+                .catch(e => this.handleError(e, 'Failed to download image'));
+            films[i].image = image;
+        }
+       this.setState({
+            films: films,
+            loaded: true,
+        });
     }
 
     handleCreate(film, file) {

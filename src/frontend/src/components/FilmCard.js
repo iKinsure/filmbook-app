@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Button, Card} from "react-bootstrap";
-import {getImage} from "../config/fetching";
 
 /**
  * @props film, onClick()
@@ -18,7 +17,7 @@ class FilmCard extends Component {
         }
         return (
             <Card style={cardStyle} >
-                <Card.Img variant="top" src={getImage(film.imageId)} />
+                <Card.Img variant="top" src={film.image} />
                 <Card.Body>
 
                     <Card.Title>
@@ -28,10 +27,6 @@ class FilmCard extends Component {
                     <Card.Subtitle className="mb-2 text-muted">
                         {film.releaseDate}
                     </Card.Subtitle>
-
-                    {/*<Card.Text>*/}
-                    {/*    {film.description}*/}
-                    {/*</Card.Text>*/}
 
                 </Card.Body>
                 <Card.Footer style={{display: 'flex', justifyContent: 'space-evenly'}}>

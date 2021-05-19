@@ -7,9 +7,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
@@ -56,9 +53,6 @@ public class ImageService {
 
         String extension = names[names.length - 1];
         String filename = UUID.randomUUID() + "." + extension;
-
-
-
         return new Image(filename, file.getContentType(), file.getBytes());
     }
 

@@ -18,7 +18,7 @@ class ViewModal extends Component {
                 onHide={onDecline}>
 
                 <Modal.Body style={{margin: 'auto'}}>
-                    <Image src={getImage(film.imageId)} fluid/>
+                    <Image src={film.image} fluid/>
                 </Modal.Body>
 
                 <Modal.Header>

@@ -11,17 +11,16 @@ export const getImage = id => {
     return 'api/images/' + id;
 }
 
-
-export const getFilms = async () => {
-    return await fetch('api/films').then(check);
+export const getFilms = () => {
+    return fetch('api/films').then(check);
 }
 
-export const getFilmById = async (id) => {
-    return await fetch(`api/films/${id}`).then(check);
+export const getFilmById = id => {
+    return fetch(`api/films/${id}`).then(check);
 }
 
-export const updateFilm = async (id, film) => {
-    return await fetch(`api/films/${id}`, {
+export const updateFilm = (id, film) => {
+    return fetch(`api/films/${id}`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -31,8 +30,8 @@ export const updateFilm = async (id, film) => {
     }).then(check);
 }
 
-export const createFilm = async (film) => {
-    return await fetch('api/films', {
+export const createFilm = film => {
+    return fetch('api/films', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -42,8 +41,8 @@ export const createFilm = async (film) => {
     }).then(check);
 }
 
-export const deleteFilm = async (id) => {
-    return await fetch(`api/films/${id}`, {
+export const deleteFilm = id => {
+    return fetch(`api/films/${id}`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -52,10 +51,10 @@ export const deleteFilm = async (id) => {
     }).then(check);
 }
 
-export const uploadImage = async (file) => {
+export const uploadImage = file => {
     const formData = new FormData();
     formData.append('file', file);
-    return await fetch('/api/images', {
+    return fetch('/api/images', {
         method: 'POST',
         body: formData,
     }).then(check);

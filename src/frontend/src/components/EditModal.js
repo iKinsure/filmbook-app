@@ -96,6 +96,8 @@ class EditModal extends Component {
                         <Form.Group controlId="image">
                             <Form.Label>Image:</Form.Label>
                             <Form.File
+                                type="file"
+                                accept="image/*"
                                 onChange={onFileChange}
                             />
                         </Form.Group>
