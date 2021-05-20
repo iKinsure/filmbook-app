@@ -8,7 +8,7 @@ const check = res => {
 }
 
 export const getImage = id => {
-    return 'api/images/' + id;
+    return fetch(`api/images/${id}`).then(check);
 }
 
 export const getFilms = () => {
@@ -52,10 +52,10 @@ export const deleteFilm = id => {
 }
 
 export const uploadImage = file => {
-    const formData = new FormData();
-    formData.append('file', file);
+    const data = new FormData();
+    data.append('file', file);
     return fetch('/api/images', {
         method: 'POST',
-        body: formData,
+        body: data,
     }).then(check);
 }

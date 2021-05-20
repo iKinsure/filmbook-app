@@ -6,7 +6,7 @@ import CreateModal from "./CreateModal";
 import ViewModal from "./ViewModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import {createFilm, deleteFilm, getFilms, getImage, updateFilm, uploadImage} from "../config/fetching";
+import {createFilm, deleteFilm, getFilmById, getFilms, getImage, updateFilm, uploadImage} from "../config/fetching";
 import ErrorModal from "./ErrorModal";
 
 
@@ -25,26 +25,54 @@ class App extends React.Component  {
         this.setState({showModal: false});
     }
 
+    onChangeFilms(elem) {
+        this.setState(prevState => ({
+            films: [...prevState.films, elem]
+        }))
+    }
+
     componentDidMount() {
         this.handleGet();
     }
 
+    async handleGetById(id) {
+        
+        let film;
+        await getFilmById(id)
+            .then(res => res.json())
+            .then(json => film = json)
+            .catch(e => this.handleError(e, 'Failed to get film'))
+
+        let image;
+        await getImage(film.imageId)
+            .then(res => res.blob())
+            .then(blob => image = URL.createObjectURL(blob))
+            .catch(e => this.handleError(e, 'Failed to download image'));
+
+        film.image = image;
+    }
+
     async handleGet() {
+        // get all films
         let films;
         await getFilms()
             .then(res => res.json())
             .then(json => films = json)
             .catch(e => this.handleError(e, 'Failed to get list of films'));
-        for (let i = 0; i < films.length; i++) {
-            let image;
-            await fetch(getImage(films[i].imageId))
+        // for each get image as blob
+        await films.map(async film => {
+            await getImage(film.imageId)
                 .then(res => res.blob())
-                .then(img => image = URL.createObjectURL(img))
+                .then(img => URL.createObjectURL(img))
+                .then(url => {
+                    film.image = url;
+                    this.setState({
+                        films: films,
+                    });
+                })
                 .catch(e => this.handleError(e, 'Failed to download image'));
-            films[i].image = image;
-        }
-       this.setState({
-            films: films,
+        });
+        await this.setState({
             loaded: true,
         });
     }
