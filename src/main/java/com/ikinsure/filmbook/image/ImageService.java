@@ -16,6 +16,11 @@ import java.util.UUID;
 public class ImageService {
 
     private final ImageRepository repository;
+    private static final Set<String> LEGAL_MIMES = Set.of(
+            "image/webp",
+            "image/png",
+            "image/jpeg"
+    );
 
     @Autowired
     public ImageService(ImageRepository repository) {
@@ -34,7 +39,6 @@ public class ImageService {
                         "Unable to find image resource"));
     }
 
-
     public void deleteImageById(Long id) {
         repository.deleteById(id);
     }
@@ -47,12 +51,7 @@ public class ImageService {
                     "File cannot be empty");
         }
 
-        Set<String> types = Set.of(
-                "image/webp",
-                "image/png",
-                "image/jpeg"
-        );
-        if (!types.contains(file.getContentType())) {
+        if (!LEGAL_MIMES.contains(file.getContentType())) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_ACCEPTABLE,
                     "File is not legal image");
